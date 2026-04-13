@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, BookOpen, Calendar, DollarSign, Globe, GraduationCap, MapPin } from "lucide-react";
+import { ArrowRight, BookOpen, Calendar, Globe, GraduationCap, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/SectionHeading";
 import studyImg from "@/assets/study-abroad.jpg";

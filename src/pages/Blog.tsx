@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+
 import { ArrowRight, Calendar, Clock } from "lucide-react";
 import SectionHeading from "@/components/SectionHeading";
 

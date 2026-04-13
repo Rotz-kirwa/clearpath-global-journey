@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Target, Heart, Users, Globe, Award, Shield } from "lucide-react";
+import { Target, Heart, Users, Globe, Shield } from "lucide-react";
 import SectionHeading from "@/components/SectionHeading";
 import StatCounter from "@/components/StatCounter";
 
