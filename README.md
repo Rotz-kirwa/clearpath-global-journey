@@ -1,3 +1,16 @@
-# Welcome to your Lovable project
+# Clearpath Global Journey
 
-TODO: Document your project here
+A study and work abroad consulting website built with React, TypeScript, Vite, Tailwind CSS, and shadcn/ui.
+
+## Getting Started
+
+```bash
+npm install
+npm run dev
+```
+
+## Build
+
+```bash
+npm run build
+```

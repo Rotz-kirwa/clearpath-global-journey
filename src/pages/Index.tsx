@@ -1,13 +1,20 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, GraduationCap, Briefcase, FileCheck, Globe, Users, Award, Star, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/SectionHeading";
 import StatCounter from "@/components/StatCounter";
-import heroBg from "@/assets/hero-bg.jpg";
-import studyImg from "@/assets/study-abroad.jpg";
-import workImg from "@/assets/work-abroad.jpg";
 import visaImg from "@/assets/visa-services.jpg";
+
+const studyImg = "https://i.pinimg.com/736x/51/46/2b/51462bff02c31d97324d43de3928996d.jpg";
+const workImg = "https://i.pinimg.com/1200x/78/5a/17/785a174ccbedf1d2b007e312aae0f2fc.jpg";
+
+const heroSlides = [
+  { src: "https://i.pinimg.com/736x/25/1e/1b/251e1b5992b5ac13797edc62ae60fb27.jpg", position: "object-center" },
+  { src: "https://i.pinimg.com/736x/ee/94/b4/ee94b446174cf4fb4353f369f988c118.jpg", position: "object-center" },
+  { src: "https://i.pinimg.com/736x/b4/56/87/b45687e15fab79a7743cdffe05a553d6.jpg", position: "object-top" },
+];
 
 const countries = [
   { name: "Canada", flag: "🇨🇦", desc: "Top destination for students & skilled workers" },
@@ -40,13 +47,47 @@ const fadeUp = {
 };
 
 const Index = () => {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % heroSlides.length);
+
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="overflow-hidden">
       {/* Hero */}
       <section className="relative min-h-[90vh] flex items-center">
-        <div className="absolute inset-0">
-          <img src={heroBg} alt="Students traveling abroad" className="w-full h-full object-cover" width={1920} height={1080} />
-          <div className="absolute inset-0 bg-gradient-to-r from-navy-dark/95 via-navy/85 to-navy/60" />
+        <div className="absolute inset-0 overflow-hidden">
+          <AnimatePresence mode="sync">
+            <motion.img
+              key={current}
+              src={heroSlides[current].src}
+              alt="Hero background"
+              className={`absolute inset-0 w-full h-full object-cover ${heroSlides[current].position}`}
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+              width={1920}
+              height={1080}
+            />
+          </AnimatePresence>
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
+
+        {/* Slide dots */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+          {heroSlides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrent(i)}
+              className={`h-2 rounded-full transition-all duration-300 ${i === current ? "w-8 bg-gold" : "w-2 bg-white/50"}`}
+            />
+          ))}
         </div>
         <div className="relative container-narrow section-padding pt-28 lg:pt-32">
           <div className="max-w-2xl">
@@ -87,7 +128,7 @@ const Index = () => {
                 </Button>
               </Link>
               <Link to="/consultation">
-                <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 text-base px-8">
+                <Button size="lg" className="bg-white text-navy border-2 border-white hover:bg-white/90 font-semibold text-base px-8" style={{ color: 'hsl(220 60% 18%)' }}>
                   Book Consultation
                 </Button>
               </Link>
@@ -131,20 +172,23 @@ const Index = () => {
       <section className="section-padding">
         <div className="container-narrow">
           <SectionHeading badge="What We Do" title="Our Services" subtitle="Comprehensive support for every step of your international journey." />
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-8">
             {services.map((s, i) => (
-              <motion.div key={s.title} {...fadeUp} transition={{ delay: i * 0.15, duration: 0.5 }}>
-                <Link to={s.link} className="group block bg-card rounded-2xl overflow-hidden border border-border hover:border-gold/30 hover:shadow-xl transition-all">
-                  <div className="h-48 overflow-hidden">
-                    <img src={s.img} alt={s.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" width={1280} height={720} />
-                  </div>
-                  <div className="p-6">
-                    <div className="w-10 h-10 rounded-xl bg-gold/10 flex items-center justify-center mb-4">
-                      <s.icon className="w-5 h-5 text-gold" />
+              <motion.div key={s.title} {...fadeUp} transition={{ delay: i * 0.15, duration: 0.5 }} className="h-full">
+                <Link to={s.link} className="group flex flex-col h-full bg-card rounded-3xl overflow-hidden border border-border hover:border-gold/40 hover:shadow-2xl transition-all duration-300">
+                  <div className="h-72 overflow-hidden relative">
+                    <img src={s.img} alt={s.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" width={1280} height={720} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                    <div className="absolute top-4 left-4">
+                      <div className="w-10 h-10 rounded-xl bg-gold flex items-center justify-center shadow-lg">
+                        <s.icon className="w-5 h-5 text-accent-foreground" />
+                      </div>
                     </div>
-                    <h3 className="font-heading font-bold text-lg mb-2">{s.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
-                    <span className="inline-flex items-center gap-1 mt-4 text-sm font-semibold text-gold group-hover:gap-2 transition-all">
+                  </div>
+                  <div className="p-6 flex flex-col flex-1">
+                    <h3 className="font-heading font-bold text-xl mb-2">{s.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed flex-1">{s.desc}</p>
+                    <span className="inline-flex items-center gap-1 mt-5 text-sm font-semibold text-gold group-hover:gap-2 transition-all">
                       Learn More <ChevronRight className="w-4 h-4" />
                     </span>
                   </div>
